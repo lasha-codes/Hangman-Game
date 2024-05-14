@@ -16,7 +16,6 @@ const countrySlice = createSlice({
   reducers: {
     getRandomWord: (state, { payload }) => {
       state.selectedCountry = payload.split('')
-      console.log(state.selectedCountry)
     },
     selectIdx: (state, { payload }) => {
       state.selectedIdx = payload

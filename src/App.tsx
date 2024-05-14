@@ -48,8 +48,6 @@ const App = () => {
     'M',
   ]
 
-  console.log(guessWord, selectedIdx)
-
   useEffect(() => {
     dispatch(getRandomWord(countries[randomIndex]))
     setGuessWord(Array(selectedCountry.length).fill(''))
@@ -57,7 +55,13 @@ const App = () => {
   }, [rerender])
 
   const selectLetter = (letter: string) => {
-    console.log(letter)
+    const guessInstance = [...guessWord]
+    if (guessInstance[selectedIdx] === letter.toLowerCase()) {
+      guessInstance[selectedIdx] = ''
+    } else {
+      guessInstance[selectedIdx] = letter.toLowerCase()
+    }
+    setGuessWord(guessInstance)
   }
 
   return (
@@ -75,9 +79,9 @@ const App = () => {
                 key={idx}
                 className={`h-[80px] ${
                   selectedIdx === idx && 'bg-blue-800 opacity-70'
-                } w-[70px] bg-blue-500 opacity-60 transition-all duration-300 ease cursor-pointer rounded-[15px]`}
+                } w-[70px] bg-blue-500 flex justify-center items-center opacity-60 transition-all duration-300 ease cursor-pointer rounded-[15px]`}
               >
-                {letter}
+                {letter.toUpperCase()}
               </div>
             )
           })}
