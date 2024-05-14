@@ -1,13 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { countries } from './countries'
 
 interface initialTypes {
   selectedIdx: null | number
   selectedCountry: string[]
 }
 
+const randomIndex = Math.floor(Math.random() * countries.length)
+
 const initialState: initialTypes = {
   selectedIdx: null,
-  selectedCountry: [],
+  selectedCountry: countries[randomIndex].toLowerCase().split(''),
 }
 
 const countrySlice = createSlice({
@@ -15,7 +18,7 @@ const countrySlice = createSlice({
   initialState: initialState,
   reducers: {
     getRandomWord: (state, { payload }) => {
-      state.selectedCountry = payload.split('')
+      state.selectedCountry = payload.toLowerCase().split('')
     },
     selectIdx: (state, { payload }) => {
       state.selectedIdx = payload

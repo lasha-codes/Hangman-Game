@@ -2,15 +2,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
 import Header from './components/Header'
-import { countries } from './countries'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRandomWord, selectIdx } from './countrySlice'
+import { selectIdx } from './countrySlice'
 
 const App = () => {
   const dispatch = useDispatch()
-  const randomIndex = Math.floor(Math.random() * countries.length)
   const [guessWord, setGuessWord] = useState<string[]>([])
-  const [rerender, setRerender] = useState<boolean>(false)
 
   const {
     selectedCountry,
@@ -18,6 +15,8 @@ const App = () => {
   }: { selectedCountry: string[]; selectedIdx: number } = useSelector(
     (state: any) => state.countries
   )
+
+  console.log(selectedCountry)
 
   const keyboardLetters = [
     'Q',
@@ -49,10 +48,8 @@ const App = () => {
   ]
 
   useEffect(() => {
-    dispatch(getRandomWord(countries[randomIndex]))
     setGuessWord(Array(selectedCountry.length).fill(''))
-    setRerender(true)
-  }, [rerender])
+  }, [selectedCountry])
 
   const selectLetter = (letter: string) => {
     const guessInstance = [...guessWord]
@@ -77,6 +74,20 @@ const App = () => {
     }
   }
 
+  const checkGuessedLetter = (guessedIndex: number) => {
+    if (
+      selectedCountry[guessedIndex]?.toLowerCase() ===
+      guessWord[guessedIndex].toLowerCase()
+    ) {
+      return 'bg-green-500'
+    }
+    if (selectedCountry.includes(guessWord[guessedIndex].toLowerCase())) {
+      return 'bg-yellow-500'
+    } else if (guessWord[guessedIndex]) {
+      return 'bg-red-500'
+    }
+  }
+
   return (
     <main className='p-12 relative'>
       <div className='bg-div' />
@@ -92,8 +103,10 @@ const App = () => {
                 key={idx}
                 className={`h-[80px] ${
                   selectedIdx === idx && 'bg-blue-800 opacity-70'
-                } w-[70px] bg-blue-500 flex text-3xl text-white justify-center items-center opacity-60 transition-all duration-300 ease cursor-pointer rounded-[15px] ${
-                  isSelected(idx) && 'opacity-100 bg-blue-700'
+                } w-[70px] bg-blue-500 ${checkGuessedLetter(
+                  idx
+                )} flex text-3xl text-white justify-center items-center opacity-60 transition-all duration-300 ease cursor-pointer rounded-[15px] ${
+                  isSelected(idx) && 'opacity-100'
                 }`}
               >
                 {letter.toUpperCase()}
