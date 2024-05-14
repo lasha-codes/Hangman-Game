@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import Header from './components/Header'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIdx } from './countrySlice'
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { FaHeart } from 'react-icons/fa6'
 
 const App = () => {
   const dispatch = useDispatch()
   const [guessWord, setGuessWord] = useState<string[]>([])
+  const [secondsLeft, setSecondsLeft] = useState(100)
 
   const {
     selectedCountry,
@@ -47,8 +49,18 @@ const App = () => {
     'M',
   ]
 
+  console.log(secondsLeft)
+
   useEffect(() => {
     setGuessWord(Array(selectedCountry.length).fill(''))
+
+    const timer = setInterval(() => {
+      if (secondsLeft > 0) {
+        setSecondsLeft((prevSeconds) => prevSeconds - 1)
+      }
+    }, 1000)
+
+    return () => clearInterval(timer)
   }, [selectedCountry])
 
   const selectLetter = (letter: string) => {
@@ -58,11 +70,7 @@ const App = () => {
     } else {
       guessInstance[selectedIdx] = letter.toLowerCase()
     }
-    if (selectedIdx === guessWord.length - 1) {
-      dispatch(selectIdx(selectedIdx - 1))
-    } else {
-      dispatch(selectIdx(selectedIdx + 1))
-    }
+
     setGuessWord(guessInstance)
   }
 
@@ -92,7 +100,27 @@ const App = () => {
     <main className='p-12 relative'>
       <div className='bg-div' />
       <div className='z-[100] w-full h-full'>
-        <Header />
+        <header className='w-full flex items-center justify-between'>
+          <div className='flex items-center gap-8'>
+            <div className='p-3 group rounded-full bg-gradient-to-t from-gradPurple to-gradPink cursor-pointer'>
+              <GiHamburgerMenu className='text-2xl text-white group-hover:scale-110 group-active:scale-90 transition-all' />
+            </div>
+            <h2 className='text-[40px] text-white'>Countries</h2>
+          </div>
+          <div className='flex items-center gap-4'>
+            <div className='bg-white h-[20px] w-[350px] border px-1 flex items-center justify-start rounded-full'>
+              <div
+                className={`rounded-full bg-gradient-to-l from-gradPink to-gradPurple transition-all duration-300 ease h-[8px]`}
+                style={{
+                  width: `${secondsLeft}%`,
+                }}
+              />
+            </div>
+            <div className='heart-icon-bg p-3 rounded-full'>
+              <FaHeart className='text-xl heart-icon text-white' />
+            </div>
+          </div>
+        </header>
       </div>
       <div className='w-full mt-24 flex flex-col gap-24 items-center justify-center'>
         <div className='flex items-center justify-center w-[70%] flex-wrap gap-5'>
