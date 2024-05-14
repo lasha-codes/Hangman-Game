@@ -64,6 +64,14 @@ const App = () => {
     setGuessWord(guessInstance)
   }
 
+  const isSelected = (index: number) => {
+    if (guessWord[index]) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <main className='p-12 relative'>
       <div className='bg-div' />
@@ -79,7 +87,9 @@ const App = () => {
                 key={idx}
                 className={`h-[80px] ${
                   selectedIdx === idx && 'bg-blue-800 opacity-70'
-                } w-[70px] bg-blue-500 flex justify-center items-center opacity-60 transition-all duration-300 ease cursor-pointer rounded-[15px]`}
+                } w-[70px] bg-blue-500 flex text-3xl text-white justify-center items-center opacity-60 transition-all duration-300 ease cursor-pointer rounded-[15px] ${
+                  isSelected(idx) && 'opacity-100 bg-blue-700'
+                }`}
               >
                 {letter.toUpperCase()}
               </div>
