@@ -61,6 +61,11 @@ const App = () => {
     } else {
       guessInstance[selectedIdx] = letter.toLowerCase()
     }
+    if (selectedIdx === guessWord.length - 1) {
+      dispatch(selectIdx(selectedIdx - 1))
+    } else {
+      dispatch(selectIdx(selectedIdx + 1))
+    }
     setGuessWord(guessInstance)
   }
 
