@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Acme&family=Madimi+One&family=Poetsen+One&family=Protest+Riot&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  font-family: 'Protest Riot', sans-serif;
+  padding: 0;
+  margin: 0;
+}
 
 .bg-div {
   position: absolute;
@@ -13,4 +21,8 @@
   background-repeat: no-repeat;
   background-position: center;
   z-index: -1;
+}
+
+.heart-icon-bg {
+  background: linear-gradient(70deg, #8a2be2, #ff69b4);
 }
