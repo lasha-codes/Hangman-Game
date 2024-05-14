@@ -19,7 +19,7 @@
   background-image: url('./assets/main-bg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: right;
   z-index: -1;
 }
 
