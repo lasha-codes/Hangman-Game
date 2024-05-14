@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
@@ -10,7 +11,6 @@ const App = () => {
   const dispatch = useDispatch()
   const [guessWord, setGuessWord] = useState<string[]>([])
   const [secondsLeft, setSecondsLeft] = useState(100)
-
   const {
     selectedCountry,
     selectedIdx,
@@ -18,7 +18,15 @@ const App = () => {
     (state: any) => state.countries
   )
 
+  const refreshGame = () => {
+    window.location.reload()
+  }
+
   console.log(selectedCountry)
+
+  if (secondsLeft === 0) {
+    refreshGame()
+  }
 
   const keyboardLetters = [
     'Q',
