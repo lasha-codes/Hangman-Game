@@ -4,14 +4,18 @@ import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import { countries } from './countries'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRandomWord } from './countrySlice'
+import { getRandomWord, selectIdx } from './countrySlice'
 
 const App = () => {
   const dispatch = useDispatch()
   const randomIndex = Math.floor(Math.random() * countries.length)
-  const [selectedWordLength, setSelectedWordLength] = useState<string[]>([])
+  const [guessWord, setGuessWord] = useState<string[]>([])
   const [rerender, setRerender] = useState<boolean>(false)
-  const { selectedCountry }: { selectedCountry: string[] } = useSelector(
+
+  const {
+    selectedCountry,
+    selectedIdx,
+  }: { selectedCountry: string[]; selectedIdx: number } = useSelector(
     (state: any) => state.countries
   )
 
@@ -44,13 +48,17 @@ const App = () => {
     'M',
   ]
 
-  console.log(selectedWordLength)
+  console.log(guessWord, selectedIdx)
 
   useEffect(() => {
     dispatch(getRandomWord(countries[randomIndex]))
-    setSelectedWordLength(Array(selectedCountry.length).fill(''))
+    setGuessWord(Array(selectedCountry.length).fill(''))
     setRerender(true)
   }, [rerender])
+
+  const selectLetter = (letter: string) => {
+    console.log(letter)
+  }
 
   return (
     <main className='p-12 relative'>
@@ -60,11 +68,14 @@ const App = () => {
       </div>
       <div className='w-full mt-24 flex flex-col gap-24 items-center justify-center'>
         <div className='flex items-center justify-center w-[70%] flex-wrap gap-5'>
-          {selectedWordLength.map((letter: string, idx: number) => {
+          {guessWord.map((letter: string, idx: number) => {
             return (
               <div
+                onClick={() => dispatch(selectIdx(idx))}
                 key={idx}
-                className={`h-[80px] w-[70px] bg-blue-500 opacity-60 rounded-[15px]`}
+                className={`h-[80px] ${
+                  selectedIdx === idx && 'bg-blue-800 opacity-70'
+                } w-[70px] bg-blue-500 opacity-60 transition-all duration-300 ease cursor-pointer rounded-[15px]`}
               >
                 {letter}
               </div>
@@ -75,6 +86,7 @@ const App = () => {
           {keyboardLetters.map((key: string, idx: number) => {
             return (
               <div
+                onClick={() => selectLetter(key.toLowerCase())}
                 key={idx}
                 className={`py-3 px-7 text-blue-800 text-xl cursor-pointer bg-white rounded-xl bg`}
               >
