@@ -1,4 +1,5 @@
 import Header from './components/Header'
+import { countries } from './countries'
 
 const App = () => {
   return (
